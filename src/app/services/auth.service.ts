@@ -5,6 +5,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { auth } from 'firebase/app';
 import { BehaviorSubject, of, empty } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
+import { AnalyticsService } from './analytics.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,8 @@ export class AuthService {
   constructor(
     private afAuth: AngularFireAuth,
     private afStore: AngularFirestore,
-    private router: Router
+    private router: Router,
+    private analyticsService: AnalyticsService
     ) {
     const dummyUser = {
       displayName: 'Profile',
@@ -26,10 +28,6 @@ export class AuthService {
     };
 
     const cachedUser = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : dummyUser;
-
-    console.log(localStorage.getItem('user'));
-
-    console.log(cachedUser);
 
     this.user$ = new BehaviorSubject(cachedUser);
 
@@ -58,10 +56,7 @@ export class AuthService {
     if (authData && authData.additionalUserInfo && authData.additionalUserInfo.isNewUser) {
       await this.createUserDoc(authData.user);
     }
-  }
-
-  async loginAnonymously() {
-    await this.afAuth.auth.signInAnonymously();
+    this.analyticsService.signIn();
   }
 
   async logout() {
@@ -73,6 +68,7 @@ export class AuthService {
       uid: null
     });
     localStorage.removeItem('user');
+    this.analyticsService.signOut();
     return this.router.navigateByUrl('/');
   }
 

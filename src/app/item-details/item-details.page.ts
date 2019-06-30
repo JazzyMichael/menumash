@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ItemService } from '../services/item.service';
+import { AnalyticsService } from '../services/analytics.service';
 
 @Component({
   selector: 'app-item-details',
@@ -10,7 +11,11 @@ import { ItemService } from '../services/item.service';
 export class ItemDetailsPage implements OnInit {
   saved: boolean;
 
-  constructor(private router: Router, private route: ActivatedRoute, public itemService: ItemService) { }
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private analyticsService: AnalyticsService,
+    public itemService: ItemService) { }
 
   ngOnInit() {
     this.route.queryParams
@@ -36,5 +41,10 @@ export class ItemDetailsPage implements OnInit {
     this.itemService.selected$.next(null);
 
     this.router.navigateByUrl('tabs/items');
+  }
+
+  puchaseOnEatstreet() {
+    this.analyticsService.purchase();
+    this.router.navigateByUrl('tabs/home/profile');
   }
 }

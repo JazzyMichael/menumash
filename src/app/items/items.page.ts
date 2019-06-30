@@ -3,6 +3,7 @@ import { ItemService } from '../services/item.service';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
+import { AnalyticsService } from '../services/analytics.service';
 
 @Component({
   selector: 'app-items',
@@ -13,7 +14,7 @@ export class ItemsPage implements OnInit, OnDestroy {
   itemSub: Subscription;
   items: any[];
   roundOfItems: any[];
-  pageLimit: number = 10;
+  itemLimit: number = 10;
   page: number = 1;
 
   leftSwipe: string;
@@ -22,7 +23,10 @@ export class ItemsPage implements OnInit, OnDestroy {
   count: number;
   updateSwipeCount$: BehaviorSubject<number> = new BehaviorSubject(0);
 
-  constructor(public itemService: ItemService, private authService: AuthService) { }
+  constructor(
+    public itemService: ItemService,
+    private authService: AuthService,
+    private analyticsService: AnalyticsService) { }
 
   ngOnInit() {
     this.count = this.authService.user ? this.authService.user.swipes : 0;
@@ -30,13 +34,13 @@ export class ItemsPage implements OnInit, OnDestroy {
     this.itemSub = this.itemService.items$.subscribe((items: any[] = []) => {
       if (items) {
         this.items = items;
-        this.roundOfItems = items.filter((item, index) => index < this.pageLimit);
+        this.roundOfItems = items.filter((item, index) => index < this.itemLimit);
       }
     });
 
     this.updateSwipeCount$.pipe(
       debounceTime(777)
-    ).subscribe(num => {
+    ).subscribe((num: number) => {
       this.count = num;
       this.authService.updateUserDoc({ swipes: num });
     });
@@ -45,6 +49,8 @@ export class ItemsPage implements OnInit, OnDestroy {
   like(item: any) {
     this.itemService.saveItem(item);
     this.rightSwipe = item.apiKey;
+    this.analyticsService.swipe();
+
     setTimeout(() => {
       this.roundOfItems.shift();
       this.resetSwipeClasses();
@@ -54,6 +60,8 @@ export class ItemsPage implements OnInit, OnDestroy {
 
   skip(item: any) {
     this.leftSwipe = item.apiKey;
+    this.analyticsService.swipe();
+
     setTimeout(() => {
       this.roundOfItems.shift();
       this.resetSwipeClasses();
@@ -67,13 +75,13 @@ export class ItemsPage implements OnInit, OnDestroy {
   }
 
   viewDetails(item: any) {
+    this.analyticsService.viewDetails();
     this.itemService.selected$.next(item);
   }
 
   skipAd() {
     this.page++;
-    this.roundOfItems = this.items.filter((item, index) => index > (this.page-1) * this.pageLimit && index < (this.pageLimit * this.page));
-    console.log(this.roundOfItems);
+    this.roundOfItems = this.items.filter((item, index) => index > (this.page-1) * this.itemLimit && index < (this.itemLimit * this.page));
   }
 
   ngOnDestroy() {
