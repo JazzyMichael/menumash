@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-icon slot="icon-only" name="arrow-round-back" (click)="goBack()"></ion-icon>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card *ngIf="itemService.selected$ | async as selected" style="height: 80%; overflow: visible;">
+  
+    <ion-card-header>
+      <ion-card-title>{{ selected.name }}</ion-card-title>
+      <ion-card-subtitle>{{ selected.basePrice | currency }}</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore totam iure sunt aliquam, qui veniam ab consectetur laboriosam fugiat quibusdam veritatis nesciunt magni autem voluptatem debitis repellat est esse! Eveniet.</p>
+      <br>
+      <ion-button expand="full">Purchase on EatStreet!</ion-button>
+    </ion-card-content>
+
+    <ion-fab vertical="bottom" slot="fixed" style="width: 100%; display: flex; justify-content: space-around; margin-bottom: -30px;">
+      <ion-fab-button [disabled]="saved" side="start" color="medium" (click)="skip(selected)">
+        <ion-icon name="close"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button [disabled]="saved" side="end" color="light" (click)="like(selected)">
+        <ion-icon *ngIf="!saved" name="heart-empty"></ion-icon>
+        <ion-icon *ngIf="saved" name="heart"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+  </ion-card>
+
+</ion-content>

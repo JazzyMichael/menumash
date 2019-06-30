@@ -32,3 +32,15 @@ $RECYCLE.BIN/
 .DS_Store
 Thumbs.db
 UserInterfaceState.xcuserstate
+
+src/environments/
+e2e/
+src/tsconfig.app.json
+src/tsconfig.spec.json
+src/tslint.json
+tsconfig.json
+tslint.json
+.firebase/
+.firebaserc
+firebase.json
+functions/

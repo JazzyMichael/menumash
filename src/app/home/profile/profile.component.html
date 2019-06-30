@@ -1,0 +1,55 @@
+
+<ion-content>
+  
+  <ion-card *ngIf="auth.user$ | async as user" style="background: linear-gradient(white, #f2fdf7); margin-bottom: 2em;">
+    <ion-card-header>
+      <ion-card-title>{{ user.displayName }}</ion-card-title>
+      <ion-card-subtitle>Total Swipes: {{ user.swipes }}</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content text-center>
+
+      <br>
+
+      <ng-container *ngIf="!user?.uid; else showSignOut">
+        <p>Save Likes and Place Orders with Google</p>
+        <ion-button size="small" style="margin-bottom: 3em" (click)="auth.loginWithGoogle()">
+          <ion-icon slot="start" name="logo-google"></ion-icon>
+          <ion-label>Sign In</ion-label>
+        </ion-button>
+      </ng-container>
+
+      <ng-template #showSignOut>
+        <ion-button fill="outline" (click)="auth.logout()">Sign Out</ion-button>
+      </ng-template>
+
+      <br>
+
+      <ion-item style="margin: 2em auto; width: 90%; background: transparent;">
+        <ion-label color="medium" position="floating">Zip Code</ion-label>
+        <ion-input type="number" inputmode="numeric" maxlength="10" color="primary" style="background: transparent;"></ion-input>
+        <ion-icon slot="end" name="pin" size="large" style="margin-top: 0.5em"></ion-icon>
+      </ion-item>
+
+      <br><br>
+
+      <p>Radius: {{ radius }}mi</p>
+      <ion-range min="2" max="10" step="1" [value]="radius" (ionChange)="radiusChange($event)">
+        <ion-icon size="small" slot="start" name="sunny"></ion-icon>
+        <ion-icon size="large" slot="end" name="sunny"></ion-icon>
+      </ion-range>
+
+      <br><br>
+
+      <p>Price: ${{ minPrice }} - ${{ maxPrice }}</p>
+      <ion-range dualKnobs="true" min="0" max="50" step="1" [value]="price" (ionChange)="priceChange($event)">
+        <ion-icon size="small" slot="start" name="pricetag"></ion-icon>
+        <ion-icon size="large" slot="end" name="pricetags"></ion-icon>
+      </ion-range>
+
+      <br><br>
+
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

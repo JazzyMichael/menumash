@@ -1,0 +1,46 @@
+
+<ion-content text-center>
+
+  <p style="color: #76a089; font-family: cursive;"><i>Searched 5mi from 19104</i></p>
+
+  <ion-card *ngIf="!roundOfItems?.length">
+    <ion-card-content>
+      <p>Interstitial Ad Goes Here</p>
+      <ion-button (click)="skipAd()">Skip</ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ng-container *ngFor="let item of roundOfItems; index as i;">
+
+    <ion-card *ngIf="i === 0" [ngClass]="{'swipe-left': leftSwipe === item.apiKey, 'swipe-right': rightSwipe === item.apiKey}">
+
+      <img src="assets/icon/favicon.png" alt="Food Image" style="max-height: 175px; width: auto; margin: auto;">
+
+      <ion-card-header>
+        <ion-card-subtitle>{{ item.basePrice | currency }}</ion-card-subtitle>
+        <ion-card-title>{{ item.name }}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content style="min-height: 200px; display: flex; flex-direction: column; justify-content: space-around; align-items: center;">
+        <p>restaurant - category</p>
+        <br>
+        <ion-button fill="outline" [routerLink]="['/tabs/item-details']" (click)="viewDetails(item)">
+          <ion-label slot="start">Details</ion-label>
+          <ion-icon slot="end" name="arrow-round-forward"></ion-icon>
+        </ion-button>
+      </ion-card-content>
+
+      <ion-fab vertical="bottom" slot="fixed" style="width: 100%; display: flex; justify-content: space-around; margin-bottom: -30px;">
+        <ion-fab-button side="start" color="medium" (click)="skip(item)">
+          <ion-icon name="close"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button side="end" color="light" (click)="like(item)">
+          <ion-icon name="heart-empty"></ion-icon>
+          <!-- <ion-icon name="heart"></ion-icon> -->
+        </ion-fab-button>
+      </ion-fab>
+    </ion-card>
+
+  </ng-container>
+
+</ion-content>
