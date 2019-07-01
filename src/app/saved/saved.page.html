@@ -1,5 +1,5 @@
-<ion-header text-center>
-  <h2>Saved</h2>
+<ion-header text-center style="color: gray; background: linear-gradient(#bdfad8, #e4fcef)">
+  <h3 style="margin: 16px auto; font-weight: 100; letter-spacing: 0.06em;">Saved</h3>
 </ion-header>
 
 <ion-content *ngIf="itemService.saved$ | async as saved">
@@ -23,9 +23,9 @@
     <ion-card-content>
       <ion-list>
         <ion-item-sliding *ngFor="let item of saved">
-          <ion-item [routerLink]="['/tabs/item-details']" [queryParams]="{ saved: true }" (click)="select(item)" style="display: flex; justify-content: space-between;">
-            <ion-avatar slot="start">
-              <img src="assets/icon/favicon.png" alt="Food-Image">
+          <ion-item [routerLink]="['/tabs/item-details']" [queryParams]="{ saved: true }" (click)="select(item)">
+            <ion-avatar slot="start" style="margin-right: 1.5em">
+              <img src="assets/Logo-4.png" alt="Food-Image">
             </ion-avatar>
             <ion-label>
               <h2>{{ item.name }}</h2>
