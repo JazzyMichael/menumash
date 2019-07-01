@@ -1,5 +1,16 @@
-<ion-header text-center style="color: gray; background: linear-gradient(#bdfad8, #e4fcef)">
-  <h3 style="margin: 16px auto; font-weight: 100; letter-spacing: 0.06em;">Saved</h3>
+<ion-header style="background: linear-gradient(#bdfad8, #e4fcef)">
+
+  <img src="assets/Logo-4.png" alt="Logo" style="margin: 0.5em auto 0; height: 70px; width: 70px; display: block;">
+  
+  <ion-segment class="my-ion-segment" value="saved">
+    <ion-segment-button value="saved">
+      <ion-label>Saved</ion-label>
+    </ion-segment-button>
+    <ion-segment-button disabled value="orders">
+      <ion-label>Orders</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
 </ion-header>
 
 <ion-content *ngIf="itemService.saved$ | async as saved">

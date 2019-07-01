@@ -7,8 +7,6 @@ import { Router } from '@angular/router';
   styleUrls: ['home.page.scss']
 })
 export class HomePage implements OnInit {
-  zipCodeExpr: RegExp = new RegExp('^[0-9]{5}(?:-[0-9]{4})?$');
-  zipCode: string = null;
 
   constructor(private router: Router) {}
 
