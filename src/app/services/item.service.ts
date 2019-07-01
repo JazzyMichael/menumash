@@ -19,8 +19,6 @@ export class ItemService {
   selected$: BehaviorSubject<any[]>;
 
   constructor(private fns: AngularFireFunctions) {
-    this.getItems();
-
     const cachedItems = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('item')) : [];
     const cachedSaved = localStorage.getItem('saved') ? JSON.parse(localStorage.getItem('saved')) : [];
 
