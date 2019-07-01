@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { AngularFireFunctions } from '@angular/fire/functions';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -18,25 +18,27 @@ export class ItemService {
 
   selected$: BehaviorSubject<any[]>;
 
-  constructor(private http: HttpClient) {
+  constructor(private fns: AngularFireFunctions) {
+    this.getItems();
+
     const cachedItems = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('item')) : [];
     const cachedSaved = localStorage.getItem('saved') ? JSON.parse(localStorage.getItem('saved')) : [];
 
     this.items$ = new BehaviorSubject(cachedItems);
     this.saved$ = new BehaviorSubject(cachedSaved);
     this.selected$ = new BehaviorSubject(null);
-
-    this.getItems();
   }
 
   getItems() {
-    this.http.get('../assets/items.json')
-      .subscribe((items: any) => {
-        items = items.items;
-        console.log({ items });
-        this.items = items;
-        this.items$.next(items);
-        localStorage.setItem('items', JSON.stringify(items));
+    const callable = this.fns.httpsCallable('getItems');
+
+    callable({ zipcode: 19104 })
+      .subscribe(res => {
+        if (res.items) {
+          this.items = res.items;
+          this.items$.next(res.items);
+          localStorage.setItem('items', JSON.stringify(res.items));
+        }
       });
   }
 

@@ -43,7 +43,7 @@ export class ItemDetailsPage implements OnInit {
     this.router.navigateByUrl('tabs/items');
   }
 
-  puchaseOnEatstreet() {
+  purchaseOnEatstreet() {
     this.analyticsService.purchase();
     this.router.navigateByUrl('tabs/home/profile');
   }
