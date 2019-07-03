@@ -6,17 +6,12 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class ItemService {
-  url = 'https://eatstreet.com/publicapi/v1/restaurant/search?method=both';
-  radius = '&pickup-radius=10';
-  coordinates = '&latitude=43.073052&longitude=-89.40123';
-  address = '&street-address=19104';
-
   items: any[];
   items$: BehaviorSubject<any[]>;
   saved: any[];
   saved$: BehaviorSubject<any[]>;
-  restaurants: any[];
-  restaurants$: BehaviorSubject<any[]>;
+  address: any;
+  address$: BehaviorSubject<any>;
 
   selected$: BehaviorSubject<any[]>;
 
@@ -26,7 +21,7 @@ export class ItemService {
 
     this.items$ = new BehaviorSubject(cachedItems);
     this.saved$ = new BehaviorSubject(cachedSaved);
-    this.restaurants$ = new BehaviorSubject([]);
+    this.address$ = new BehaviorSubject(null);
     this.selected$ = new BehaviorSubject(null);
     this.getItems();
   }
@@ -48,9 +43,9 @@ export class ItemService {
           localStorage.setItem('items', JSON.stringify(res.items));
         }
 
-        if (res && res.restaurants) {
-          this.restaurants = res.restaurants.restaurants;
-          this.restaurants$.next(res.restaurants.restaurants);
+        if (res && res.address) {
+          this.address = res.address;
+          this.address$.next(res.address);
         }
       });
   }

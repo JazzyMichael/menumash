@@ -1,14 +1,17 @@
 
 <ion-content text-center>
 
-  <p style="font-family: cursive">{{ recentCard }}</p>
+  <p *ngIf="itemService.address$ | async as address" style="font-family: cursive; margin: 0 auto;">
+    {{ address?.zip }} <span *ngIf="recentCard"> - {{ recentCard }}</span>
+  </p>
 
   <ion-card *ngIf="!roundOfItems?.length">
     <ion-card-content>
-      <br><br>
-      <p>~ Interstitial Ad Goes Here ~</p>
-      <br><br>
+      <br><br><br>
+      <p>~ Ad Goes Here ~</p>
+      <br><br><br>
       <ion-button (click)="skipAd()">Skip</ion-button>
+      <br><br><br>
     </ion-card-content>
   </ion-card>
 
@@ -33,7 +36,7 @@
       </ion-card-header>
 
       <ion-card-content text-center>
-        <p>restaurant - category</p>
+        <p>{{ item.restaurant.name }} - {{ item.category.name }}</p>
         <br>
         <ion-button fill="outline" [routerLink]="['/tabs/item-details']" (click)="viewDetails(item)" style="margin-bottom: 25px">
           <ion-label slot="start">Details</ion-label>
