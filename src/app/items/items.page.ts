@@ -39,6 +39,7 @@ export class ItemsPage implements OnInit, AfterViewInit, OnDestroy {
 
   stackConfig: StackConfig;
   recentCard: string;
+  debouncer: any;
 
   constructor(
     public itemService: ItemService,
@@ -124,11 +125,13 @@ export class ItemsPage implements OnInit, AfterViewInit, OnDestroy {
 
     this.updateSwipeCount$.next(this.count++);
 
-    setTimeout(() => {
-      if (this && this.recentCard === `${this.recentCard}`) {
-        this.recentCard = null;
-      }
-    }, 5000);
+    if (this.debouncer) {
+      clearTimeout(this.debouncer);
+    }
+
+    this.debouncer = setTimeout(() => {
+      this.recentCard = null;
+    }, 7777);
   }
 
   resetSwipeClasses() {

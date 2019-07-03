@@ -1,26 +1,24 @@
 #card-stack {
-	width: 300px;
-	height: 400px;
-	margin: 50px auto 0;
 	position: relative;
 }
 
 #card-stack div ion-card {
 	position: absolute;
-    top: 2%;
+    top: 15vh;
     left: 0;
     right: 0;
-    min-width: 200px;
-    max-width: 300px;
+    width: 250px;
+    height: 350px;
     margin: auto;
     overflow: visible;
     background-color: white;
+    border: 1px solid gray;
 }
 
 #card-stack div ion-card ion-fab {
-    width: 100%;
+    position: absolute;
     display: flex;
     justify-content: space-around;
-    margin-bottom: -35px;
-    position: absolute;
+    width: 100%;
+    margin-bottom: -40px;
 }

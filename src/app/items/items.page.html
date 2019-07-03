@@ -1,12 +1,13 @@
 
 <ion-content text-center>
 
-  <p>{{ recentCard }}</p>
-  <!-- <p style="color: #76a089; font-family: cursive;"><i>Searched 5mi from 19104</i></p> -->
+  <p style="font-family: cursive">{{ recentCard }}</p>
 
   <ion-card *ngIf="!roundOfItems?.length">
     <ion-card-content>
-      <p>Interstitial Ad Goes Here</p>
+      <br><br>
+      <p>~ Interstitial Ad Goes Here ~</p>
+      <br><br>
       <ion-button (click)="skipAd()">Skip</ion-button>
     </ion-card-content>
   </ion-card>
