@@ -16,7 +16,7 @@ export class AppComponent {
     private itemService: ItemService
   ) {
     this.initializeApp();
-    this.itemService.getItems();
+    this.itemService.init();
   }
 
   initializeApp() {

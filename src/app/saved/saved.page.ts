@@ -1,18 +1,21 @@
-import { Component } from '@angular/core';
-import { ItemService } from '../services/item.service';
-import { AnalyticsService } from '../services/analytics.service';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-saved',
   templateUrl: 'saved.page.html',
   styleUrls: ['saved.page.scss']
 })
-export class SavedPage {
+export class SavedPage implements OnInit {
 
-  constructor(public itemService: ItemService, private analyticsService: AnalyticsService) { }
+  constructor(private router: Router) { }
 
-  select(item: any) {
-    this.analyticsService.viewDetails(true);
-    this.itemService.selected$.next(item);
+  ngOnInit() {
+    this.router.navigateByUrl('tabs/saved/item-list');
+  }
+
+  onIonChange(event: any) {
+    const path = event.detail.value || '';
+    this.router.navigateByUrl(`tabs/saved/${path}`);
   }
 }

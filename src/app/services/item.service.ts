@@ -15,6 +15,8 @@ export class ItemService {
   items$: BehaviorSubject<any[]>;
   saved: any[];
   saved$: BehaviorSubject<any[]>;
+  restaurants: any[];
+  restaurants$: BehaviorSubject<any[]>;
 
   selected$: BehaviorSubject<any[]>;
 
@@ -24,7 +26,13 @@ export class ItemService {
 
     this.items$ = new BehaviorSubject(cachedItems);
     this.saved$ = new BehaviorSubject(cachedSaved);
+    this.restaurants$ = new BehaviorSubject([]);
     this.selected$ = new BehaviorSubject(null);
+    this.getItems();
+  }
+
+  init() {
+    return;
   }
 
   getItems() {
@@ -32,10 +40,17 @@ export class ItemService {
 
     callable({ zipcode: 19104 })
       .subscribe(res => {
-        if (res.items) {
+        console.log(res);
+
+        if (res && res.items) {
           this.items = res.items;
           this.items$.next(res.items);
           localStorage.setItem('items', JSON.stringify(res.items));
+        }
+
+        if (res && res.restaurants) {
+          this.restaurants = res.restaurants.restaurants;
+          this.restaurants$.next(res.restaurants.restaurants);
         }
       });
   }

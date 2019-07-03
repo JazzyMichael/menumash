@@ -2,11 +2,11 @@
 
   <img src="assets/Logo-4.png" alt="Logo" style="margin: 0.5em auto 0; height: 70px; width: 70px; display: block;">
   
-  <ion-segment class="my-ion-segment" (ionChange)="onIonChange($event)" value="profile">
-    <ion-segment-button value="profile">
+  <ion-segment mode="md" value="profile" (ionChange)="onIonChange($event)">
+    <ion-segment-button mode="md" value="profile">
       <ion-label>Settings</ion-label>
     </ion-segment-button>
-    <ion-segment-button value="info">
+    <ion-segment-button mode="md" value="info">
       <ion-label>Info</ion-label>
     </ion-segment-button>
   </ion-segment>

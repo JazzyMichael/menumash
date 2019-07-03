@@ -1,17 +1,32 @@
 import { IonicModule } from '@ionic/angular';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { SavedPage } from './saved.page';
+import { ItemListComponent } from './item-list/item-list.component';
+import { OrdersComponent } from './orders/orders.component';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: SavedPage,
+    children: [
+      { path: 'item-list', component: ItemListComponent },
+      { path: 'orders', component: OrdersComponent }
+    ]
+  }
+];
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
-    FormsModule,
-    RouterModule.forChild([{ path: '', component: SavedPage }])
+    RouterModule.forChild(routes)
   ],
-  declarations: [SavedPage]
+  declarations: [
+    SavedPage,
+    ItemListComponent,
+    OrdersComponent
+  ]
 })
 export class SavedPageModule {}

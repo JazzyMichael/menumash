@@ -53,7 +53,7 @@ export class ItemsPage implements OnInit, AfterViewInit, OnDestroy {
           this.onItemMove(element, x, y, r);
         },
         throwOutDistance: (d) => {
-          return 800;
+          return 400;
         }
       };
     }
@@ -65,7 +65,6 @@ export class ItemsPage implements OnInit, AfterViewInit, OnDestroy {
       if (items) {
         this.items = items;
         this.roundOfItems = items.filter((item, index) => index < this.itemLimit);
-        console.log('roundOfItems', this.roundOfItems);
       }
     });
 
