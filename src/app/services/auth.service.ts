@@ -90,7 +90,7 @@ export class AuthService {
 
   updateUserDoc(obj: any) {
     if (!this.user || !this.user.uid || !obj) {
-      return 'no update';
+      return 'cannot update user';
     }
 
     return this.afStore.doc(`users/${this.user.uid}`).update(obj);

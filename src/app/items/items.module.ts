@@ -4,12 +4,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ItemsPage } from './items.page';
+import { SwingModule } from 'angular2-swing';
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
     FormsModule,
+    SwingModule,
     RouterModule.forChild([{ path: '', component: ItemsPage }])
   ],
   declarations: [ItemsPage]
