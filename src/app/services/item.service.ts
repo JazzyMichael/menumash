@@ -12,7 +12,6 @@ export class ItemService {
   saved$: BehaviorSubject<any[]>;
   address: any;
   address$: BehaviorSubject<any>;
-
   selected$: BehaviorSubject<any[]>;
 
   constructor(private fns: AngularFireFunctions) {
@@ -40,6 +39,21 @@ export class ItemService {
     return;
   }
 
+  async shuffle(arr: any[]) {
+    // Fisher-Yates Algorithm traverses array in reverse swapping each index with a random one before it
+
+    const array = [].concat(arr);
+
+    for (let i = array.length - 1; i > 0; i--) {
+      const random = Math.floor(Math.random() * (i + 1));
+      [array[i], array[random]] = [array[random], array[i]];
+
+      if (i === 1) {
+        return array;
+      }
+    }
+  }
+
   getItems(zipcode: number | string) {
 
     if (!zipcode) {
@@ -49,11 +63,12 @@ export class ItemService {
     const callable = this.fns.httpsCallable('getItems');
 
     callable({ zipcode })
-      .subscribe(res => {
+      .subscribe(async res => {
         if (res && res.items) {
-          this.items = res.items;
-          this.items$.next(res.items);
-          localStorage.setItem('items', JSON.stringify(res.items));
+          const shuffledItems = await this.shuffle(res.items);
+          this.items = shuffledItems;
+          this.items$.next(shuffledItems);
+          localStorage.setItem('items', JSON.stringify(shuffledItems));
         }
 
         if (res && res.address) {

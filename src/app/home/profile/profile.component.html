@@ -24,6 +24,7 @@
       <br>
 
       <ion-item color="transparent" style="color: gray; margin: 2em auto; width: 90%;">
+        <!-- <ion-icon slot="start" name="locate" size="large" style="margin-top: 0.5em; cursor: pointer;"></ion-icon> -->
         <ion-label color="medium" position="floating">Zip Code</ion-label>
         <ion-input
           type="text"
@@ -31,9 +32,14 @@
           inputmode="numeric"
           maxlength="10"
           color="primary"
+          pattern="/^[0-9]{5}(?:-[0-9]{4})?$/"
+          required="true"
           debounce="500"
+          (ionBlur)="zipInputBlur()"
+          (ionFocus)="typing = true;"
           (ionChange)="inputChange($event)"></ion-input>
-        <ion-icon slot="end" name="pin" size="large" style="margin-top: 0.5em; cursor: pointer;" (click)="itemService.getItems(zipcode)"></ion-icon>
+        <ion-button *ngIf="typing" [disabled]="!validZip" slot="end" type="submit">Save</ion-button>
+        <ion-icon [color]="validZip ? 'primary' : 'danger'" *ngIf="!typing" slot="end" name="pin" size="large" style="margin-top: 0.5em"></ion-icon>
       </ion-item>
 
       <br><br>

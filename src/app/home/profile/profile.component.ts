@@ -13,6 +13,8 @@ export class ProfileComponent implements OnInit {
   price: any = { lower: 0, upper: 40 };
   radius: number = 5;
   zipcode: number | string = null;
+  typing: boolean;
+  validZip: boolean;
 
   constructor(
     public auth: AuthService,
@@ -20,17 +22,24 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() { }
 
+  zipInputBlur() {
+    this.typing = false;
+    if (this.zipcode && this.validZip) {
+      this.itemService.getItems(this.zipcode);
+    }
+  }
+
   inputChange(event: any) {
     const zipcodePattern = /^[0-9]{5}(?:-[0-9]{4})?$/;
     const isValid = zipcodePattern.test(event.detail.value);
 
-    console.log(event.detail.value, zipcodePattern.test(event.detail.value));
-
     if (isValid) {
+      this.validZip = true;
       this.zipcode = event.detail.value;
       this.itemService.address$.next({ ...this.itemService.address, zipcode: this.zipcode });
       console.log('valid');
     } else {
+      this.validZip = false;
       console.log('invalid');
     }
   }

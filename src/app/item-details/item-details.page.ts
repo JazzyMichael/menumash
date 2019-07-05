@@ -45,6 +45,6 @@ export class ItemDetailsPage implements OnInit {
 
   purchaseOnEatstreet() {
     this.analyticsService.purchase();
-    this.router.navigateByUrl('tabs/home/profile');
+    this.router.navigateByUrl('tabs/saved/orders');
   }
 }
