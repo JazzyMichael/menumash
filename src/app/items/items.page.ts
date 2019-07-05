@@ -20,22 +20,19 @@ import {
   styleUrls: ['items.page.scss']
 })
 export class ItemsPage implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('mystack') swingStack: SwingStackComponent;
+  @ViewChildren('mycard') swingCards: QueryList<SwingCardComponent>;
+
+  userSub: Subscription;
   itemSub: Subscription;
   items: any[];
   roundOfItems: any[];
+
   itemLimit: number = 10;
   page: number = 1;
 
-  leftSwipe: string;
-  rightSwipe: string;
-
-  count: number;
+  count: number = 0;
   updateSwipeCount$: BehaviorSubject<number> = new BehaviorSubject(0);
-
-  /** ~ */
-
-  @ViewChild('mystack') swingStack: SwingStackComponent;
-  @ViewChildren('mycard') swingCards: QueryList<SwingCardComponent>;
 
   stackConfig: StackConfig;
   recentCard: string;
@@ -56,7 +53,9 @@ export class ItemsPage implements OnInit, AfterViewInit, OnDestroy {
     }
 
   ngOnInit() {
-    this.count = this.authService.user ? this.authService.user.swipes : 0;
+    this.userSub = this.authService.user$.subscribe(user => {
+      this.count = user && user.swipes ? user.swipes : 0;
+    });
 
     this.itemSub = this.itemService.items$.subscribe((items: any[] = []) => {
       if (items) {
@@ -68,9 +67,8 @@ export class ItemsPage implements OnInit, AfterViewInit, OnDestroy {
     this.updateSwipeCount$.pipe(
       debounceTime(777)
     ).subscribe((num: number) => {
-      if (num) {
-        this.count = num;
-        this.authService.updateUserDoc({ swipes: num });
+      if (this.count) {
+        this.authService.updateUserDoc({ swipes: this.count });
       }
     });
   }
@@ -98,13 +96,13 @@ export class ItemsPage implements OnInit, AfterViewInit, OnDestroy {
     element.style['transform'] = `translate3d(0, 0, 0) translate(${x}px, ${y}px) rotate(${r}deg)`;
   }
 
-  // http://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hex-in-javascript
   decimalToHex(d, padding) {
+    // http://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hex-in-javascript
     let hex = Number(d).toString(16);
-    padding = typeof (padding) === "undefined" || padding === null ? padding = 2 : padding;
+    padding = typeof (padding) === 'undefined' || padding === null ? padding = 2 : padding;
 
     while (hex.length < padding) {
-      hex = "0" + hex;
+      hex = '0' + hex;
     }
 
     return hex;
@@ -119,7 +117,8 @@ export class ItemsPage implements OnInit, AfterViewInit, OnDestroy {
 
     this.analyticsService.swipe();
 
-    this.updateSwipeCount$.next(this.count++);
+    this.count++;
+    this.updateSwipeCount$.next(this.count);
 
     if (this.debouncer) {
       clearTimeout(this.debouncer);
@@ -130,11 +129,6 @@ export class ItemsPage implements OnInit, AfterViewInit, OnDestroy {
     }, 7777);
   }
 
-  resetSwipeClasses() {
-    this.leftSwipe = null;
-    this.rightSwipe = null;
-  }
-
   viewDetails(item: any) {
     this.analyticsService.viewDetails();
     this.itemService.selected$.next(item);
@@ -142,10 +136,13 @@ export class ItemsPage implements OnInit, AfterViewInit, OnDestroy {
 
   skipAd() {
     this.page++;
-    this.roundOfItems = this.items.filter((item, index) => index > (this.page-1) * this.itemLimit && index < (this.itemLimit * this.page));
+    this.roundOfItems = this.items.filter((item, index) => {
+      return index > ((this.page - 1) * this.itemLimit) && index < (this.itemLimit * this.page);
+    });
   }
 
   ngOnDestroy() {
     this.itemSub.unsubscribe();
+    this.userSub.unsubscribe();
   }
 }

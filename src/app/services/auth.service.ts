@@ -83,8 +83,19 @@ export class AuthService {
   }
 
   updateUserDoc(obj: any) {
-    if (!this.user || !this.user.uid || !obj) {
-      return 'cannot update user';
+    console.log('updateUserDoc', obj);
+    if (!this.user || !obj) {
+      console.log('no user or obj');
+      return;
+    }
+
+    this.user = { ...this.user, ...obj };
+    this.user$.next(this.user);
+    localStorage.setItem('user', JSON.stringify(this.user));
+
+    if (!this.user.uid) {
+      console.log('no uid');
+      return;
     }
 
     return this.afStore.doc(`users/${this.user.uid}`).update(obj);

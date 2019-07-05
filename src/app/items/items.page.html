@@ -27,7 +27,7 @@
       swing-card
       #mycard
       *ngFor="let item of roundOfItems; index as i;">
-    <ion-card>
+    <ion-card [ngStyle]="{'opacity': i === roundOfItems.length - 1 ? '1' : '0.1'}">
       <img src="assets/Logo-2.png" alt="Food Image" style="max-height: 150px; width: auto; margin: auto;">
 
       <ion-card-header>
