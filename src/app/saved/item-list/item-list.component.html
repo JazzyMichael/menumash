@@ -1,7 +1,7 @@
 <ion-content>
 <ion-card style="height: 70px; text-align: center;">
   <ion-card-content>
-    <ion-text>~ Banner Ad Goes Here ~</ion-text>
+    <ion-text>~ Ad Goes Here ~</ion-text>
   </ion-card-content>
 </ion-card>
 
@@ -16,7 +16,7 @@
   </ion-card-header>
 
   <ion-card-content>
-    <ion-list>
+    <ion-list style="background: white">
       <ion-item-sliding *ngFor="let item of saved">
         <ion-item [routerLink]="['/tabs/item-details']" [queryParams]="{ saved: true }" (click)="select(item)">
           <ion-avatar slot="start" style="margin-right: 1.5em">

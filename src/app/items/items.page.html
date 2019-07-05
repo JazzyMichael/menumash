@@ -1,6 +1,6 @@
 <ion-content text-center>
 
-  <p style="font-family: cursive; margin: 5px auto 0;">
+  <p color="medium" style="margin: 10px auto 0; font-size: 0.9em;">
     <span *ngIf="itemService.address$ | async as address">{{ address?.zip }} <span *ngIf="recentCard"> - </span></span>
     <span *ngIf="recentCard"> {{ recentCard }}</span>
   </p>

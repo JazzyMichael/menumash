@@ -29,3 +29,15 @@
                         color-stop(0.44, #B8EFD2),
                         color-stop(0.86, #378871)) !important;
 }
+
+ion-content {
+    --ion-background-color: linear-gradient(#f2fdf7, #e0fced);
+}
+
+ion-card {
+    background: white !important;
+}
+
+ion-item {
+    --background: white !important;
+}
