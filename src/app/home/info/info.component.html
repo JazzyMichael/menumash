@@ -1,5 +1,5 @@
 
-<ion-content>
+<ion-content [scrollEvents]="true" (ionScroll)="onScroll($event)">
 
   <ion-card>
     <ion-card-content text-center>
@@ -70,6 +70,6 @@
     </ion-card-content>
   </ion-card>
 
-  <img src="assets/Logo-2.png" alt="Logo" style="margin: 1em auto 2em; width: 100px; height: 100px; display: block;">
+  <img src="assets/Logo-2.png" alt="Logo" style="margin: 1em auto 5em; width: 100px; height: 100px; display: block;">
 
 </ion-content>

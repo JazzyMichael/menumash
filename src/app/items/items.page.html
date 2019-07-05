@@ -1,8 +1,8 @@
-
 <ion-content text-center>
 
-  <p *ngIf="itemService.address$ | async as address" style="font-family: cursive; margin: 0 auto;">
-    {{ address?.zip }} <span *ngIf="recentCard"> - {{ recentCard }}</span>
+  <p style="font-family: cursive; margin: 5px auto 0;">
+    <span *ngIf="itemService.address$ | async as address">{{ address?.zip }} <span *ngIf="recentCard"> - </span></span>
+    <span *ngIf="recentCard"> {{ recentCard }}</span>
   </p>
 
   <ion-card *ngIf="!roundOfItems?.length">

@@ -1,4 +1,7 @@
-<ion-header style="background: linear-gradient(#bdfad8, #e4fcef)">
+<ion-header
+  *ngIf="scrollService.showHeader$ | async as showHeader"
+  [ngStyle]="{'top': showHeader && showHeader.show ? '0px' : '-80px'}"
+  style="background: linear-gradient(#bdfad8, #e4fcef); -webkit-transition: 333ms all !important;">
 
   <img src="assets/Logo-4.png" alt="Logo" style="margin: 0.5em auto 0; height: 70px; width: 70px; display: block;">
   
@@ -13,8 +16,8 @@
 
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf="scrollService.showHeader$ | async as showHeader" [fullscreen]="!showHeader.show">
 
-  <ion-router-outlet></ion-router-outlet>
+  <ion-router-outlet [ngStyle]="{'top': !showHeader.show ? '50px' : '0px'}" style="-webkit-transition: 333ms all !important;"></ion-router-outlet>
 
 </ion-content>
