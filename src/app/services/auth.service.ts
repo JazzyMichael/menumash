@@ -13,6 +13,12 @@ import { AnalyticsService } from './analytics.service';
 export class AuthService {
   user$: BehaviorSubject<any>;
   user: any;
+  dummyUser: any = {
+    displayName: '',
+    swipes: 0,
+    saved: [],
+    uid: null
+  };
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -20,14 +26,7 @@ export class AuthService {
     private router: Router,
     private analyticsService: AnalyticsService
     ) {
-    const dummyUser = {
-      displayName: 'Profile',
-      swipes: 0,
-      saved: [],
-      uid: null
-    };
-
-    const cachedUser = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : dummyUser;
+    const cachedUser = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : this.dummyUser;
 
     this.user$ = new BehaviorSubject(cachedUser);
 
@@ -61,12 +60,7 @@ export class AuthService {
 
   async logout() {
     await this.afAuth.auth.signOut();
-    this.user$.next({
-      displayName: 'Profile',
-      swipes: 0,
-      saved: [],
-      uid: null
-    });
+    this.user$.next(this.dummyUser);
     localStorage.removeItem('user');
     this.analyticsService.signOut();
     return this.router.navigateByUrl('/');

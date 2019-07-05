@@ -18,17 +18,21 @@ export class ItemService {
   constructor(private fns: AngularFireFunctions) {
     const cachedItems = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
     const cachedSaved = localStorage.getItem('saved') ? JSON.parse(localStorage.getItem('saved')) : [];
+    const cachedAddress = localStorage.getItem('address') ? JSON.parse(localStorage.getItem('address')) : null;
 
     this.items$ = new BehaviorSubject(cachedItems);
     this.saved$ = new BehaviorSubject(cachedSaved);
-    this.address$ = new BehaviorSubject(null);
+    this.address$ = new BehaviorSubject(cachedAddress);
     this.selected$ = new BehaviorSubject(null);
 
     if (cachedItems && cachedItems.length) {
       console.log('using cached items');
     } else {
       console.log('getting new items');
-      this.getItems();
+      if (cachedAddress && cachedAddress.zipcode) {
+        this.address = cachedAddress;
+        this.getItems(cachedAddress.zipcode);
+      }
     }
   }
 
@@ -36,13 +40,16 @@ export class ItemService {
     return;
   }
 
-  getItems() {
+  getItems(zipcode: number | string) {
+
+    if (!zipcode) {
+      console.log('invalid zipcode');
+    }
+
     const callable = this.fns.httpsCallable('getItems');
 
-    callable({ zipcode: 19104 })
+    callable({ zipcode })
       .subscribe(res => {
-        // console.log(res);
-
         if (res && res.items) {
           this.items = res.items;
           this.items$.next(res.items);
@@ -52,6 +59,7 @@ export class ItemService {
         if (res && res.address) {
           this.address = res.address;
           this.address$.next(res.address);
+          localStorage.setItem('address', JSON.stringify(res.address));
         }
       });
   }

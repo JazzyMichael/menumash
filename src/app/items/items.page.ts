@@ -47,13 +47,10 @@ export class ItemsPage implements OnInit, AfterViewInit, OnDestroy {
     private analyticsService: AnalyticsService) {
       this.stackConfig = {
         throwOutConfidence: (offsetX, offsetY, element) => {
-          return Math.min(Math.abs(offsetX) / (element.offsetWidth / 2), 1);
+          return Math.min(Math.abs(offsetX) / (element.offsetWidth / 3), 1);
         },
         transform: (element, x, y, r) => {
           this.onItemMove(element, x, y, r);
-        },
-        throwOutDistance: (d) => {
-          return 400;
         }
       };
     }

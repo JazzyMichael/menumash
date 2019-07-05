@@ -9,8 +9,6 @@
 
     <ion-card-content text-center>
 
-      <br>
-
       <ng-container *ngIf="!user?.uid; else showSignOut">
         <p>Save Likes and Place Orders with Google</p>
         <ion-button size="small" style="margin-bottom: 3em" (click)="auth.loginWithGoogle()">
@@ -27,8 +25,15 @@
 
       <ion-item color="transparent" style="color: gray; margin: 2em auto; width: 90%;">
         <ion-label color="medium" position="floating">Zip Code</ion-label>
-        <ion-input type="number" inputmode="numeric" maxlength="10" color="primary"></ion-input>
-        <ion-icon slot="end" name="pin" size="large" style="margin-top: 0.5em"></ion-icon>
+        <ion-input
+          type="text"
+          [value]="zipcode"
+          inputmode="numeric"
+          maxlength="10"
+          color="primary"
+          debounce="500"
+          (ionChange)="inputChange($event)"></ion-input>
+        <ion-icon slot="end" name="pin" size="large" style="margin-top: 0.5em; cursor: pointer;" (click)="itemService.getItems(zipcode)"></ion-icon>
       </ion-item>
 
       <br><br>

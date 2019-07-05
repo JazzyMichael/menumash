@@ -37,8 +37,8 @@
 
       <ion-card-content text-center>
         <p>{{ item.restaurant.name }} - {{ item.category.name }}</p>
-        <br>
-        <ion-button fill="outline" [routerLink]="['/tabs/item-details']" (click)="viewDetails(item)" style="margin-bottom: 25px">
+
+        <ion-button fill="outline" [routerLink]="['/tabs/item-details']" (click)="viewDetails(item)">
           <ion-label slot="start">Details</ion-label>
           <ion-icon slot="end" name="arrow-round-forward"></ion-icon>
         </ion-button>
