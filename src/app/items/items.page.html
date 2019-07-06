@@ -5,7 +5,7 @@
     <span *ngIf="recentCard"> {{ recentCard }}</span>
   </p>
 
-  <ng-template>
+  <ng-template #noZip>
     <span>NO ZIPCODE, enter it on the home page, this is the default <span *ngIf="recentCard"> - </span></span>
   </ng-template>
 
