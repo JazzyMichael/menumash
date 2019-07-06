@@ -34,7 +34,7 @@
           [color]="zipcode && validZip ? 'primary' : 'danger'"
           pattern="/^[0-9]{5}(?:-[0-9]{4})?$/"
           required="true"
-          debounce="500"
+          debounce="200"
           (ionBlur)="zipInputBlur()"
           (ionFocus)="typing = true;"
           (ionChange)="inputChange($event)"></ion-input>
@@ -45,7 +45,7 @@
       <br><br>
 
       <p>Radius: {{ radius }}mi</p>
-      <ion-range min="2" max="10" step="1" [value]="radius" (ionChange)="radiusChange($event)">
+      <ion-range mode="md" min="2" max="10" step="1" [value]="radius" (ionChange)="radiusChange($event)">
         <ion-icon size="small" slot="start" name="sunny"></ion-icon>
         <ion-icon size="large" slot="end" name="sunny"></ion-icon>
       </ion-range>
@@ -53,7 +53,7 @@
       <br><br>
 
       <p>Price: ${{ minPrice }} - ${{ maxPrice }}</p>
-      <ion-range dualKnobs="true" min="0" max="50" step="1" [value]="price" (ionChange)="priceChange($event)">
+      <ion-range mode="ios" dualKnobs="true" min="0" max="50" step="1" [value]="price" (ionChange)="priceChange($event)">
         <ion-icon size="small" slot="start" name="pricetag"></ion-icon>
         <ion-icon size="large" slot="end" name="pricetags"></ion-icon>
       </ion-range>

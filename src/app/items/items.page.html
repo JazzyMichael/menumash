@@ -1,9 +1,13 @@
 <ion-content text-center>
 
   <p color="medium" style="margin: 10px auto 0; font-size: 0.9em;">
-    <span *ngIf="itemService.address$ | async as address">{{ address?.zip }} <span *ngIf="recentCard"> - </span></span>
+    <span *ngIf="itemService.address$ | async as address; else noZip">{{ address?.zip }} <span *ngIf="recentCard"> - </span></span>
     <span *ngIf="recentCard"> {{ recentCard }}</span>
   </p>
+
+  <ng-template>
+    <span>NO ZIPCODE, enter it on the home page, this is the default <span *ngIf="recentCard"> - </span></span>
+  </ng-template>
 
   <ion-card *ngIf="!roundOfItems?.length">
     <ion-card-content>
@@ -32,7 +36,7 @@
 
       <ion-card-header>
         <ion-card-subtitle>{{ item.basePrice | currency }}</ion-card-subtitle>
-        <ion-card-title>{{ item.name }}</ion-card-title>
+        <ion-card-title style="font-size: 20px">{{ item.name }}</ion-card-title>
       </ion-card-header>
 
       <ion-card-content text-center>
