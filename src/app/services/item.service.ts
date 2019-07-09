@@ -64,6 +64,11 @@ export class ItemService {
 
     callable({ zipcode })
       .subscribe(async res => {
+        if (res && res.error) {
+          console.log('error getting items', res);
+          return;
+        }
+
         if (res && res.items) {
           const shuffledItems = await this.shuffle(res.items);
           this.items = shuffledItems;

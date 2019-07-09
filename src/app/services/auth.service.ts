@@ -83,7 +83,6 @@ export class AuthService {
   }
 
   updateUserDoc(obj: any) {
-    console.log('updateUserDoc', obj);
     if (!this.user || !obj) {
       console.log('no user or obj');
       return;
