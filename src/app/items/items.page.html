@@ -1,15 +1,24 @@
 <ion-content text-center>
 
   <p color="medium" style="margin: 10px auto 0; font-size: 0.9em;">
-    <span *ngIf="itemService.address$ | async as address; else noZip">{{ address?.zip }} <span *ngIf="recentCard"> - </span></span>
+    <span *ngIf="itemService.address$ | async as address">{{ address?.zip }} <span *ngIf="recentCard"> - </span></span>
     <span *ngIf="recentCard"> {{ recentCard }}</span>
   </p>
 
+  <div *ngIf="!items.length" style="width: 90%; height: 90%; margin: 1em auto; display: flex; flex-direction: column; justify-content: space-around; align-items: center;">
+      <div *ngIf="itemService.address$ | async as address; else noZip">
+        <span>Loading food for {{ address.zipcode }}</span>
+        <br>
+        <ion-progress-bar value="0.25" buffer="0.5" style="margin: 2em 0"></ion-progress-bar>
+      </div>
+      <img src="assets/hamburger-guy.svg" alt="Loading Image with Hamburger">
+  </div>
+
   <ng-template #noZip>
-    <span>NO ZIPCODE, enter it on the home page, this is the default <span *ngIf="recentCard"> - </span></span>
+    <ion-button routerLink="/home/profile">Enter Zipcode!</ion-button>
   </ng-template>
 
-  <ion-card *ngIf="!roundOfItems?.length">
+  <ion-card *ngIf="items && !roundOfItems.length">
     <ion-card-content>
       <br><br><br>
       <p>~ Ad Goes Here ~</p>
@@ -20,44 +29,44 @@
   </ion-card>
 
   <div
-    swing-stack
+    *ngIf="roundOfItems?.length"
     #mystack
+    swing-stack
     id="card-stack"
     [stackConfig]="stackConfig"
     (throwoutleft)="vote(false)"
     (throwoutright)="vote(true)">
 
-    <div
-      swing-card
-      #mycard
-      *ngFor="let item of roundOfItems; index as i;">
-    <ion-card [ngStyle]="{'opacity': i === roundOfItems.length - 1 ? '1' : '0.1'}">
-      <img [src]="item.restaurant.logoUrl" alt="Food Image" style="max-height: 150px; width: auto; margin: auto;">
+    <div #mycards swing-card *ngFor="let item of roundOfItems; index as i;">
+      <ion-card [ngStyle]="{'opacity': i === roundOfItems.length - 1 ? '1' : '0.1'}">
+        <img [src]="item.restaurant.logoUrl" alt="Food Image" style="max-height: 150px; width: auto; margin: auto;">
 
-      <ion-card-header>
-        <ion-card-subtitle>{{ item.basePrice | currency }}</ion-card-subtitle>
-        <ion-card-title style="font-size: 20px">{{ item.name }}</ion-card-title>
-      </ion-card-header>
+        <ion-card-header>
+          <ion-card-subtitle>{{ item.basePrice | currency }}</ion-card-subtitle>
+          <ion-card-title style="font-size: 20px">{{ item.name }}</ion-card-title>
+        </ion-card-header>
 
-      <ion-card-content text-center>
-        <p>{{ item.restaurant.name }} - {{ item.category.name }}</p>
+        <ion-card-content text-center>
+          <p>{{ item.restaurant.name }} - {{ item.category.name }}</p>
 
-        <ion-button fill="outline" [routerLink]="['/tabs/item-details']" (click)="viewDetails(item)">
-          <ion-label slot="start">Details</ion-label>
-          <ion-icon slot="end" name="arrow-round-forward"></ion-icon>
-        </ion-button>
-      </ion-card-content>
+          <ion-button fill="outline" [routerLink]="['/tabs/item-details']" (click)="viewDetails(item)">
+            <ion-label slot="start">Details</ion-label>
+            <ion-icon slot="end" name="arrow-round-forward"></ion-icon>
+          </ion-button>
+        </ion-card-content>
 
-      <ion-fab *ngIf="i === roundOfItems.length - 1" vertical="bottom" slot="fixed">
-        <ion-fab-button side="start" color="medium" (click)="vote(false)">
-          <ion-icon name="close"></ion-icon>
-        </ion-fab-button>
-        <ion-fab-button side="end" color="light" (click)="vote(true)">
-          <ion-icon name="heart-empty"></ion-icon>
-          <!-- <ion-icon name="heart"></ion-icon> -->
-        </ion-fab-button>
-      </ion-fab>
-    </ion-card>
+        <ion-fab *ngIf="i === roundOfItems.length - 1" vertical="bottom" slot="fixed">
+          <ion-fab-button side="start" color="medium" (click)="vote(false)">
+            <ion-icon name="close"></ion-icon>
+          </ion-fab-button>
+          <ion-fab-button side="end" color="light" (click)="vote(true)">
+            <ion-icon name="heart-empty"></ion-icon>
+            <!-- <ion-icon name="heart"></ion-icon> -->
+          </ion-fab-button>
+        </ion-fab>
+
+      </ion-card>
+
     </div>
 
   </div>

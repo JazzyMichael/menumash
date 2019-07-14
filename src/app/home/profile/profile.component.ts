@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { ItemService } from 'src/app/services/item.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile',
@@ -20,7 +21,14 @@ export class ProfileComponent implements OnInit {
     public auth: AuthService,
     public itemService: ItemService) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.itemService.address$.pipe(
+      take(1)
+    ).subscribe(address => {
+      this.zipcode = address && address.zip ? address.zip : null;
+      this.validZip = this.zipcode ? true : false;
+    });
+  }
 
   zipInputBlur() {
     this.typing = false;
@@ -37,10 +45,8 @@ export class ProfileComponent implements OnInit {
       this.validZip = true;
       this.zipcode = event.detail.value;
       this.itemService.address$.next({ ...this.itemService.address, zipcode: this.zipcode });
-      console.log('valid');
     } else {
       this.validZip = false;
-      console.log('invalid');
     }
   }
 

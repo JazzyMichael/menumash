@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { ItemService } from '../services/item.service';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
@@ -19,9 +19,9 @@ import {
   templateUrl: 'items.page.html',
   styleUrls: ['items.page.scss']
 })
-export class ItemsPage implements OnInit, AfterViewInit, OnDestroy {
+export class ItemsPage implements OnInit, OnDestroy {
   @ViewChild('mystack') swingStack: SwingStackComponent;
-  @ViewChildren('mycard') swingCards: QueryList<SwingCardComponent>;
+  @ViewChildren('mycards') swingCards: QueryList<SwingCardComponent>;
 
   userSub: Subscription;
   itemSub: Subscription;
@@ -57,10 +57,13 @@ export class ItemsPage implements OnInit, AfterViewInit, OnDestroy {
       this.count = user && user.swipes ? user.swipes : 0;
     });
 
-    this.itemSub = this.itemService.items$.subscribe((items: any[] = []) => {
-      if (items) {
+    this.itemSub = this.itemService.items$.subscribe((items: any[]) => {
+      if (items && items.length) {
         this.items = items;
         this.roundOfItems = items.filter((item, index) => index < this.itemLimit);
+        // this.swingStack.throwin.subscribe((event: DragEvent) => {
+        //   event.target.style.background = '#ffffff';
+        // });
       }
     });
 
@@ -70,12 +73,6 @@ export class ItemsPage implements OnInit, AfterViewInit, OnDestroy {
       if (this.count) {
         this.authService.updateUserDoc({ swipes: this.count });
       }
-    });
-  }
-
-  ngAfterViewInit() {
-    this.swingStack.throwin.subscribe((event: DragEvent) => {
-      event.target.style.background = '#ffffff';
     });
   }
 

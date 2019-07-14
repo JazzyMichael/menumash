@@ -38,14 +38,14 @@
           (ionBlur)="zipInputBlur()"
           (ionFocus)="typing = true;"
           (ionChange)="inputChange($event)"></ion-input>
-        <ion-button *ngIf="typing" [disabled]="!validZip" slot="end" type="submit">Save</ion-button>
-        <ion-icon [color]="validZip ? 'primary' : 'danger'" *ngIf="!typing" slot="end" name="pin" size="large" style="margin-top: 0.5em"></ion-icon>
+        <ion-button *ngIf="typing && validZip" slot="end" type="submit" fill="clear" style="color: #1A936F">Saved!</ion-button>
+        <ion-icon [color]="validZip ? 'primary' : 'danger'" *ngIf="!validZip" slot="end" name="pin" size="large" style="margin-top: 0.5em"></ion-icon>
       </ion-item>
 
       <br><br>
 
       <p>Radius: {{ radius }}mi</p>
-      <ion-range mode="md" min="2" max="10" step="1" [value]="radius" (ionChange)="radiusChange($event)">
+      <ion-range mode="ios" min="2" max="10" step="1" [value]="radius" (ionChange)="radiusChange($event)">
         <ion-icon size="small" slot="start" name="sunny"></ion-icon>
         <ion-icon size="large" slot="end" name="sunny"></ion-icon>
       </ion-range>
