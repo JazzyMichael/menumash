@@ -16,9 +16,9 @@
     </ion-card-header>
 
     <ion-card-content>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore totam iure sunt aliquam, qui veniam ab consectetur laboriosam fugiat quibusdam veritatis nesciunt magni autem voluptatem debitis repellat est esse! Eveniet.</p>
+      <p *ngIf="selected.description">{{ selected.description }}</p>
       <br>
-      <ion-button expand="full" (click)="purchaseOnEatstreet()">Purchase on EatStreet!</ion-button>
+      <ion-button expand="full" (click)="purchaseOnEatstreet(selected.restaurant.url)">Purchase on EatStreet!</ion-button>
     </ion-card-content>
 
     <ion-fab vertical="bottom" slot="fixed" style="width: 100%; display: flex; justify-content: space-around; margin-bottom: -30px;">

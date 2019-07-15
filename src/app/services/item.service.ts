@@ -26,12 +26,12 @@ export class ItemService {
 
     if (cachedItems && cachedItems.length) {
       console.log('using cached items');
-    } else {
+    } else if (cachedAddress && cachedAddress.zip) {
       console.log('getting new items');
-      if (cachedAddress && cachedAddress.zipcode) {
-        this.address = cachedAddress;
-        this.getItems(cachedAddress.zipcode);
-      }
+      this.address = cachedAddress;
+      this.getItems({ zipcode: cachedAddress.zip });
+    } else {
+      console.log('no location, no items');
     }
   }
 
@@ -54,17 +54,18 @@ export class ItemService {
     }
   }
 
-  getItems(zipcode: number | string) {
+  getItems({ zipcode, longitude = null, latitude = null, radius = null }) {
 
-    if (!zipcode) {
-      console.log('invalid zipcode');
+    if (!zipcode && !longitude && !latitude) {
+      console.log('no location');
+      return;
     }
 
     const callable = this.fns.httpsCallable('getItems');
 
-    callable({ zipcode })
+    callable({ zipcode, longitude, latitude, radius })
       .subscribe(async res => {
-        if (res && res.error) {
+        if (!res || res.error) {
           console.log('error getting items', res);
           return;
         }
@@ -86,6 +87,10 @@ export class ItemService {
 
   saveItem(item: any) {
     let items: any[] = localStorage.getItem('saved') ? JSON.parse(localStorage.getItem('saved')) : [];
+
+    if (items.length > 50) {
+      items = items.slice(items.length - 50, items.length - 1);
+    }
 
     items = items.filter(savedItem => savedItem.apiKey !== item.apiKey);
 

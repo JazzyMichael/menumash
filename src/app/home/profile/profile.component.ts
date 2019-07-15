@@ -44,7 +44,7 @@ export class ProfileComponent implements OnInit {
   zipInputBlur() {
     this.typing = false;
     if (this.zipcode && this.validZip) {
-      this.itemService.getItems(this.zipcode);
+      this.itemService.getItems({ zipcode: this.zipcode, radius: this.radius });
     }
   }
 
@@ -55,7 +55,7 @@ export class ProfileComponent implements OnInit {
     if (isValid) {
       this.validZip = true;
       this.zipcode = event.detail.value;
-      this.itemService.address$.next({ ...this.itemService.address, zipcode: this.zipcode });
+      this.itemService.address$.next({ ...this.itemService.address, zip: this.zipcode });
     } else {
       this.validZip = false;
     }
@@ -75,6 +75,7 @@ export class ProfileComponent implements OnInit {
   }
 
   updateRadius() {
+    this.zipInputBlur();
     this.editing = null;
   }
 

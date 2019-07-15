@@ -20,7 +20,7 @@
       <ion-item-sliding *ngFor="let item of saved">
         <ion-item [routerLink]="['/tabs/item-details']" [queryParams]="{ saved: true }" (click)="select(item)">
           <ion-avatar slot="start" style="margin-right: 1.5em">
-            <img src="assets/Logo-4.png" alt="Food-Image">
+            <img [src]="item.restaurant.logoUrl" alt="Food-Image">
           </ion-avatar>
           <ion-label>
             <h2>{{ item.name }}</h2>

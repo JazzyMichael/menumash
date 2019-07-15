@@ -3,6 +3,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ItemService } from '../services/item.service';
 import { AnalyticsService } from '../services/analytics.service';
 
+declare var window: any;
+
 @Component({
   selector: 'app-item-details',
   templateUrl: './item-details.page.html',
@@ -43,8 +45,8 @@ export class ItemDetailsPage implements OnInit {
     this.router.navigateByUrl('tabs/items');
   }
 
-  purchaseOnEatstreet() {
-    this.analyticsService.purchase();
-    this.router.navigateByUrl('tabs/saved/item-list');
+  purchaseOnEatstreet(url: string) {
+    // this.analyticsService.purchase();
+    window.open(url, '_blank');
   }
 }
