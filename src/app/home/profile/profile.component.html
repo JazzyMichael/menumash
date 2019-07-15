@@ -39,21 +39,42 @@
           (ionFocus)="typing = true;"
           (ionChange)="inputChange($event)"></ion-input>
         <ion-button *ngIf="typing && validZip" slot="end" type="submit" fill="clear" style="color: #1A936F">Saved!</ion-button>
-        <ion-icon [color]="validZip ? 'primary' : 'danger'" *ngIf="!validZip" slot="end" name="pin" size="large" style="margin-top: 0.5em"></ion-icon>
+        <ion-icon [color]="validZip ? 'primary' : 'danger'" *ngIf="!typing" slot="end" name="pin" size="large" style="margin-top: 0.5em"></ion-icon>
       </ion-item>
 
       <br><br>
-
-      <p>Radius: {{ radius }}mi</p>
-      <ion-range mode="ios" min="2" max="10" step="1" [value]="radius" (ionChange)="radiusChange($event)">
+ 
+      <p style="display: inline-block">Radius: {{ radius }}mi</p>
+      <ion-icon *ngIf="editing === 'radius'" color="primary" name="checkmark" (click)="updateRadius()" style="display: inline-block; margin: 0 1em; cursor: pointer;"></ion-icon>
+      <ion-icon *ngIf="editing !== 'radius'" color="medium" name="create" (click)="editing = 'radius'"  style="display: inline-block; margin: 0 1em; cursor: pointer;"></ion-icon>
+      <ion-range
+        mode="ios"
+        min="2"
+        max="10"
+        step="1"
+        [value]="radius"
+        [disabled]="editing !== 'radius'"
+        (ionChange)="radiusChange($event)"
+        (ionBlur)="updateRadius()">
         <ion-icon size="small" slot="start" name="sunny"></ion-icon>
         <ion-icon size="large" slot="end" name="sunny"></ion-icon>
       </ion-range>
 
       <br><br>
 
-      <p>Price: ${{ minPrice }} - ${{ maxPrice }}</p>
-      <ion-range mode="ios" dualKnobs="true" min="0" max="50" step="1" [value]="price" (ionChange)="priceChange($event)">
+      <p style="display: inline-block">Price: ${{ price.lower }} - ${{ price.upper }}</p>
+      <ion-icon *ngIf="editing === 'price'" color="primary" name="checkmark" (click)="updatePrice()" style="display: inline-block; margin: 0 1em; cursor: pointer;"></ion-icon>
+      <ion-icon *ngIf="editing !== 'price'" color="medium" name="create" (click)="editing = 'price'" style="display: inline-block; margin: 0 1em; cursor: pointer;"></ion-icon>
+      <ion-range
+        mode="ios"
+        dualKnobs="true"
+        min="0"
+        max="50"
+        step="1"
+        [value]="price"
+        [disabled]="editing !== 'price'"
+        (ionChange)="priceChange($event)"
+        (ionBlur)="updatePrice()">
         <ion-icon size="small" slot="start" name="pricetag"></ion-icon>
         <ion-icon size="large" slot="end" name="pricetags"></ion-icon>
       </ion-range>

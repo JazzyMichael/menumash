@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { ItemService } from '../services/item.service';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { Subscription, BehaviorSubject, pipe, of } from 'rxjs';
+import { debounceTime, filter, switchMap } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { AnalyticsService } from '../services/analytics.service';
 import {
@@ -13,6 +13,7 @@ import {
   SwingStackComponent,
   SwingCardComponent
 } from 'angular2-swing';
+import { PriceService } from '../services/price.service';
 
 @Component({
   selector: 'app-items',
@@ -25,7 +26,9 @@ export class ItemsPage implements OnInit, OnDestroy {
 
   userSub: Subscription;
   itemSub: Subscription;
+
   items: any[];
+  filteredItems: any[];
   roundOfItems: any[];
 
   itemLimit: number = 10;
@@ -38,9 +41,14 @@ export class ItemsPage implements OnInit, OnDestroy {
   recentCard: string;
   debouncer: any;
 
+  priceSub: Subscription;
+  minPrice: number = 2;
+  maxPrice: number = 50;
+
   constructor(
     public itemService: ItemService,
     private authService: AuthService,
+    private priceService: PriceService,
     private analyticsService: AnalyticsService) {
       this.stackConfig = {
         throwOutConfidence: (offsetX, offsetY, element) => {
@@ -57,15 +65,39 @@ export class ItemsPage implements OnInit, OnDestroy {
       this.count = user && user.swipes ? user.swipes : 0;
     });
 
-    this.itemSub = this.itemService.items$.subscribe((items: any[]) => {
-      if (items && items.length) {
-        this.items = items;
-        this.roundOfItems = items.filter((item, index) => index < this.itemLimit);
-        // this.swingStack.throwin.subscribe((event: DragEvent) => {
-        //   event.target.style.background = '#ffffff';
-        // });
+    this.priceSub = this.priceService.price$.subscribe(price => {
+      console.log('items page price', price);
+      this.minPrice = price.lower;
+      this.maxPrice = price.upper;
+
+      if (this.items && this.items.length) {
+        this.filteredItems = this.items.filter(item => {
+          const min = this.minPrice;
+          const max = this.maxPrice;
+          return parseFloat(item.basePrice) > min && parseFloat(item.basePrice) < max;
+        });
+
+        this.roundOfItems = this.filteredItems.slice(0, this.itemLimit);
       }
     });
+
+    this.itemSub = this.itemService.items$
+      .subscribe((items: any[]) => {
+        if (items && items.length) {
+          this.items = items;
+
+          this.filteredItems = items.filter(item => {
+            const min = this.minPrice || 2;
+            const max = this.maxPrice || 40;
+            return parseFloat(item.basePrice) > min && parseFloat(item.basePrice) < max;
+          });
+
+          this.roundOfItems = this.filteredItems.slice(0, this.itemLimit);
+          // this.swingStack.throwin.subscribe((event: DragEvent) => {
+          //   event.target.style.background = '#ffffff';
+          // });
+        }
+      });
 
     this.updateSwipeCount$.pipe(
       debounceTime(777)
@@ -76,21 +108,22 @@ export class ItemsPage implements OnInit, OnDestroy {
     });
   }
 
-  // Called whenever we drag an element
   onItemMove(element, x, y, r) {
-    let color = '';
-    const abs = Math.abs(x);
-    let min = Math.trunc(Math.min(16 * 16 - abs, 16 * 16));
-    let hexCode = this.decimalToHex(min, 2);
+    // Called whenever we drag an element
 
-    if (x < 0) {
-      color = '#FF' + hexCode + hexCode;
-    } else {
-      color = '#' + hexCode + 'FF' + hexCode;
-    }
-
-    // element.style.background = color;
     element.style['transform'] = `translate3d(0, 0, 0) translate(${x}px, ${y}px) rotate(${r}deg)`;
+
+    // const abs = Math.abs(x);
+    // let min = Math.trunc(Math.min(16 * 16 - abs, 16 * 16));
+    // let hexCode = this.decimalToHex(min, 2);
+
+    // let color = '';
+    // if (x < 0) {
+    //   color = '#FF' + hexCode + hexCode;
+    // } else {
+    //   color = '#' + hexCode + 'FF' + hexCode;
+    // }
+    // element.style.background = color;
   }
 
   decimalToHex(d, padding) {
@@ -133,13 +166,13 @@ export class ItemsPage implements OnInit, OnDestroy {
 
   skipAd() {
     this.page++;
-    this.roundOfItems = this.items.filter((item, index) => {
-      return index > ((this.page - 1) * this.itemLimit) && index < (this.itemLimit * this.page);
-    });
+    this.roundOfItems = this.filteredItems
+      .slice(((this.page - 1) * this.itemLimit), (this.page * this.itemLimit));
   }
 
   ngOnDestroy() {
-    this.itemSub.unsubscribe();
     this.userSub.unsubscribe();
+    this.itemSub.unsubscribe();
+    this.priceSub.unsubscribe();
   }
 }

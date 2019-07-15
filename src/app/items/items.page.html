@@ -5,9 +5,9 @@
     <span *ngIf="recentCard"> {{ recentCard }}</span>
   </p>
 
-  <div *ngIf="!items.length" style="width: 90%; height: 90%; margin: 1em auto; display: flex; flex-direction: column; justify-content: space-around; align-items: center;">
+  <div *ngIf="!items?.length" style="width: 90%; height: 90%; margin: 1em auto; display: flex; flex-direction: column; justify-content: space-around; align-items: center;">
       <div *ngIf="itemService.address$ | async as address; else noZip">
-        <span>Loading food for {{ address.zipcode }}</span>
+        <span>Loading food for {{ address.zip }}</span>
         <br>
         <ion-progress-bar value="0.25" buffer="0.5" style="margin: 2em 0"></ion-progress-bar>
       </div>
@@ -39,7 +39,7 @@
 
     <div #mycards swing-card *ngFor="let item of roundOfItems; index as i;">
       <ion-card [ngStyle]="{'opacity': i === roundOfItems.length - 1 ? '1' : '0.1'}">
-        <img [src]="item.restaurant.logoUrl" alt="Food Image" style="max-height: 150px; width: auto; margin: auto;">
+        <img [src]="item.restaurant.logoUrl" alt="Food Image" class="food-image">
 
         <ion-card-header>
           <ion-card-subtitle>{{ item.basePrice | currency }}</ion-card-subtitle>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { ItemService } from 'src/app/services/item.service';
 import { take } from 'rxjs/operators';
+import { PriceService } from 'src/app/services/price.service';
 
 @Component({
   selector: 'app-profile',
@@ -9,17 +10,19 @@ import { take } from 'rxjs/operators';
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
-  minPrice: number = 0;
-  maxPrice: number = 40;
-  price: any = { lower: 0, upper: 40 };
+  minPrice: number;
+  maxPrice: number;
+  price: any;
   radius: number = 5;
   zipcode: number | string = null;
   typing: boolean;
   validZip: boolean;
+  editing: string;
 
   constructor(
     public auth: AuthService,
-    public itemService: ItemService) { }
+    public itemService: ItemService,
+    private priceService: PriceService) { }
 
   ngOnInit() {
     this.itemService.address$.pipe(
@@ -27,6 +30,14 @@ export class ProfileComponent implements OnInit {
     ).subscribe(address => {
       this.zipcode = address && address.zip ? address.zip : null;
       this.validZip = this.zipcode ? true : false;
+    });
+
+    this.priceService.price$.pipe(
+      take(1)
+    ).subscribe(price => {
+      this.price = price;
+      this.minPrice = price.lower;
+      this.maxPrice = price.upper;
     });
   }
 
@@ -51,12 +62,20 @@ export class ProfileComponent implements OnInit {
   }
 
   priceChange(event: any) {
-    this.minPrice = event.detail.value.lower;
-    this.maxPrice = event.detail.value.upper;
+    this.price = event.detail.value;
   }
 
   radiusChange(event: any) {
     this.radius = event.detail.value;
+  }
+
+  updatePrice() {
+    this.priceService.price$.next(this.price);
+    this.editing = null;
+  }
+
+  updateRadius() {
+    this.editing = null;
   }
 
 }
