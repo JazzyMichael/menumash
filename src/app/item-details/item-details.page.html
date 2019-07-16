@@ -3,26 +3,25 @@
       <ion-buttons slot="start">
         <ion-icon slot="icon-only" name="arrow-round-back" (click)="goBack()" style="cursor: pointer"></ion-icon>
       </ion-buttons>
+      <ion-title *ngIf="itemService.selected$ | async as item">{{ item.restaurant.name }} ({{ item.restaurant.city }})</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
-  <ion-card *ngIf="itemService.selected$ | async as selected" style="min-height: 60%">
+  <ion-card *ngIf="itemService.selected$ | async as item" style="min-height: 60%">
   
     <ion-card-header>
-      <ion-card-title>{{ selected.name }}</ion-card-title>
-      <ion-card-subtitle>{{ selected.basePrice | currency }}</ion-card-subtitle>
+      <ion-card-title>{{ item.name }}</ion-card-title>
+      <ion-card-subtitle>{{ item.basePrice | currency }}</ion-card-subtitle>
     </ion-card-header>
 
     <ion-card-content>
-      <p *ngIf="selected.description">{{ selected.description }}</p>
+      <p *ngIf="item.description">{{ item.description }}</p>
 
-      <p style="text-align: center; margin: 3em auto 0;">{{ selected.restaurant.name }}</p>
+      <img [src]="item.restaurant.logoUrl" alt="Food-Image" style="margin: 2em auto; height: 150px; width: auto;">
 
-      <img [src]="selected.restaurant.logoUrl" alt="Food-Image" style="margin: 0 auto 3em; height: 150px; width: auto;">
-
-      <ion-button expand="full" (click)="purchaseOnEatstreet(selected.restaurant.url)">Purchase on EatStreet!</ion-button>
+      <ion-button expand="full" (click)="purchaseOnEatstreet(item.restaurant.url)">Purchase on EatStreet!</ion-button>
     </ion-card-content>
 
   </ion-card>

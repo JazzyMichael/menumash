@@ -17,26 +17,12 @@ export class ItemService {
   constructor(private fns: AngularFireFunctions) {
     const cachedItems = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
     const cachedSaved = localStorage.getItem('saved') ? JSON.parse(localStorage.getItem('saved')) : [];
-    const cachedAddress = localStorage.getItem('address') ? JSON.parse(localStorage.getItem('address')) : null;
+    const cachedAddress = localStorage.getItem('address') ? JSON.parse(localStorage.getItem('address')) : {};
 
     this.items$ = new BehaviorSubject(cachedItems);
     this.saved$ = new BehaviorSubject(cachedSaved);
     this.address$ = new BehaviorSubject(cachedAddress);
     this.selected$ = new BehaviorSubject(null);
-
-    if (cachedItems && cachedItems.length) {
-      console.log('using cached items');
-    } else if (cachedAddress && cachedAddress.zip) {
-      console.log('getting new items');
-      this.address = cachedAddress;
-      this.getItems({ zipcode: cachedAddress.zip });
-    } else {
-      console.log('no location, no items');
-    }
-  }
-
-  init() {
-    return;
   }
 
   async shuffle(arr: any[]) {
@@ -70,7 +56,7 @@ export class ItemService {
           return;
         }
 
-        if (res && res.items) {
+        if (res && res.items && res.items.length) {
           const shuffledItems = await this.shuffle(res.items);
           this.items = shuffledItems;
           this.items$.next(shuffledItems);

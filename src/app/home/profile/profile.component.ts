@@ -1,17 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { ItemService } from 'src/app/services/item.service';
 import { take } from 'rxjs/operators';
 import { PriceService } from 'src/app/services/price.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })
-export class ProfileComponent implements OnInit {
-  minPrice: number;
-  maxPrice: number;
+export class ProfileComponent implements OnInit, OnDestroy {
   price: any;
   radius: number = 5;
   zipcode: number | string = null;
@@ -20,6 +19,7 @@ export class ProfileComponent implements OnInit {
   typing: boolean;
   validZip: boolean;
   editing: string;
+  addressSub: Subscription;
 
   constructor(
     public auth: AuthService,
@@ -27,9 +27,7 @@ export class ProfileComponent implements OnInit {
     private priceService: PriceService) { }
 
   ngOnInit() {
-    this.itemService.address$.pipe(
-      take(1)
-    ).subscribe(address => {
+    this.addressSub = this.itemService.address$.subscribe(address => {
       this.zipcode = address && address.zip ? address.zip : null;
       this.latitude = address && address.latitude ? `${address.latitude}` : null;
       this.longitude = address && address.longitude ? `${address.longitude}` : null;
@@ -40,8 +38,6 @@ export class ProfileComponent implements OnInit {
       take(1)
     ).subscribe(price => {
       this.price = price;
-      this.minPrice = price.lower;
-      this.maxPrice = price.upper;
     });
   }
 
@@ -83,4 +79,7 @@ export class ProfileComponent implements OnInit {
     this.editing = null;
   }
 
+  ngOnDestroy() {
+    this.addressSub.unsubscribe();
+  }
 }

@@ -42,8 +42,8 @@ export class ItemsPage implements OnInit, OnDestroy {
   debouncer: any;
 
   priceSub: Subscription;
-  minPrice: number = 2;
-  maxPrice: number = 50;
+  minPrice: number = 4;
+  maxPrice: number = 40;
 
   constructor(
     public itemService: ItemService,
@@ -66,7 +66,6 @@ export class ItemsPage implements OnInit, OnDestroy {
     });
 
     this.priceSub = this.priceService.price$.subscribe(price => {
-      console.log('items page price', price);
       this.minPrice = price.lower;
       this.maxPrice = price.upper;
 
@@ -87,7 +86,7 @@ export class ItemsPage implements OnInit, OnDestroy {
           this.items = items;
 
           this.filteredItems = items.filter(item => {
-            const min = this.minPrice || 2;
+            const min = this.minPrice || 4;
             const max = this.maxPrice || 40;
             return parseFloat(item.basePrice) > min && parseFloat(item.basePrice) < max;
           });
@@ -143,7 +142,9 @@ export class ItemsPage implements OnInit, OnDestroy {
 
     this.recentCard = like ? `Saved` : `Skipped`;
 
-    this.itemService.saveItem(removedCard);
+    if (like) {
+      this.itemService.saveItem(removedCard);
+    }
 
     this.analyticsService.swipe();
 
