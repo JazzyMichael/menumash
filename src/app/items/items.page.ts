@@ -141,7 +141,7 @@ export class ItemsPage implements OnInit, OnDestroy {
   vote(like: boolean) {
     const removedCard = this.roundOfItems.pop();
 
-    this.recentCard = like ? `${removedCard.name} Saved` : `${removedCard.name} Skipped`;
+    this.recentCard = like ? `Saved` : `Skipped`;
 
     this.itemService.saveItem(removedCard);
 

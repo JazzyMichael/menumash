@@ -54,7 +54,7 @@ export class ItemService {
     }
   }
 
-  getItems({ zipcode, longitude = null, latitude = null, radius = null }) {
+  getItems({ zipcode = null, longitude = null, latitude = null, radius = null }) {
 
     if (!zipcode && !longitude && !latitude) {
       console.log('no location');

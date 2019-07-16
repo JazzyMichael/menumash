@@ -44,3 +44,5 @@ tslint.json
 .firebaserc
 firebase.json
 functions/
+android/
+ios/

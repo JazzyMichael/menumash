@@ -1,0 +1,7 @@
+{
+  "appId": "app.menumash",
+  "appName": "Menu Mash",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www"
+}

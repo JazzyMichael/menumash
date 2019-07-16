@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
-// import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-// import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { ItemService } from './services/item.service';
+import { Plugins } from '@capacitor/core';
+const { SplashScreen, StatusBar, Geolocation } = Plugins;
 
 @Component({
   selector: 'app-root',
@@ -11,19 +11,40 @@ import { ItemService } from './services/item.service';
 export class AppComponent {
   constructor(
     private platform: Platform,
-    // private splashScreen: SplashScreen,
-    // private statusBar: StatusBar,
     private itemService: ItemService
   ) {
     this.initializeApp();
-    this.itemService.init();
   }
 
   initializeApp() {
-    this.platform.ready().then(() => {
-      console.log('I\'m Ready!');
-      // this.statusBar.styleDefault();
-      // this.splashScreen.hide();
+
+    this.platform.ready().then(async () => {
+
+      SplashScreen.hide();
+
+      try {
+        const coordinates = await Geolocation.getCurrentPosition();
+
+        const { latitude, longitude } = coordinates.coords;
+
+        this.itemService.getItems({ latitude, longitude });
+
+      } catch (e) {
+
+        const address = localStorage.getItem('address') ? JSON.parse(localStorage.getItem('address')) : null;
+
+        if (address) {
+          this.itemService.getItems({
+            zipcode: address.zip,
+            latitude: address.latitude,
+            longitude: address.longitude
+          });
+          console.log('Old location');
+        } else {
+          console.log('No location');
+        }
+      }
+
     });
   }
 }
