@@ -31,13 +31,17 @@
 }
 
 ion-content {
-    --ion-background-color: linear-gradient(#f2fdf7, #e0fced);
+    --ion-background-color: linear-gradient(#62a0fd, #bbf5d6);
 }
 
 ion-card {
-    background: white !important;
+    background: linear-gradient(50deg, #fffff6, #ffffff) !important;
 }
 
 ion-item {
+    --background: transparent !important;
+}
+
+ion-item:hover {
     --background: white !important;
 }

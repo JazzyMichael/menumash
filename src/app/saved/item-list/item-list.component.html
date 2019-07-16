@@ -16,8 +16,8 @@
   </ion-card-header>
 
   <ion-card-content>
-    <ion-list style="background: white">
-      <ion-item-sliding *ngFor="let item of saved">
+    <ion-list style="background: transparent !important">
+      <ion-item-sliding *ngFor="let item of saved.slice().reverse()">
         <ion-item [routerLink]="['/tabs/item-details']" [queryParams]="{ saved: true }" (click)="select(item)">
           <ion-avatar slot="start" style="margin-right: 1.5em">
             <img [src]="item.restaurant.logoUrl" alt="Food-Image">
