@@ -16,8 +16,11 @@
 
       <br>
 
-      <ion-icon *ngIf="longitude && latitude" name="locate" color="primary" size="large"></ion-icon>
-      <p *ngIf="longitude && latitude">Long: {{ longitude | slice:0:10 }}, Lat: {{ latitude | slice:0:10 }}</p>
+      <ion-icon *ngIf="latitude && longitude" name="locate" color="primary" size="large"></ion-icon>
+      <div *ngIf="latitude && longitude" style="width: 100%; max-width: 400px; margin: 0 auto; display: flex; justify-content: space-around;">
+        <p>Lat: {{ latitude | slice:0:10 }}</p>
+        <p>Long: {{ longitude | slice:0:10 }}</p>
+      </div>
 
       <ion-item color="transparent" style="color: gray; margin: 2em auto; width: 90%;">
         <ion-label color="medium" position="floating">Zip Code</ion-label>
@@ -40,8 +43,8 @@
       <br><br>
  
       <p style="display: inline-block">Radius: {{ radius }}mi</p>
-      <ion-icon *ngIf="editing === 'radius'" color="primary" name="checkmark" (click)="updateRadius()" style="display: inline-block; margin: 0 1em; cursor: pointer;"></ion-icon>
-      <ion-icon *ngIf="editing !== 'radius'" color="medium" name="create" (click)="editing = 'radius'"  style="display: inline-block; margin: 0 1em; cursor: pointer;"></ion-icon>
+      <ion-icon *ngIf="editing === 'radius'" color="primary" size="large" name="checkmark" (click)="updateRadius()" style="display: inline-block; margin: 0 1em; cursor: pointer;"></ion-icon>
+      <ion-icon *ngIf="editing !== 'radius'" color="medium" size="large" name="create" (click)="editing = 'radius'"  style="display: inline-block; margin: 0 1em; cursor: pointer;"></ion-icon>
       <ion-range
         mode="ios"
         min="2"
@@ -58,8 +61,8 @@
       <br><br>
 
       <p style="display: inline-block">Price: ${{ price.lower }} - ${{ price.upper }}</p>
-      <ion-icon *ngIf="editing === 'price'" color="primary" name="checkmark" (click)="updatePrice()" style="display: inline-block; margin: 0 1em; cursor: pointer;"></ion-icon>
-      <ion-icon *ngIf="editing !== 'price'" color="medium" name="create" (click)="editing = 'price'" style="display: inline-block; margin: 0 1em; cursor: pointer;"></ion-icon>
+      <ion-icon *ngIf="editing === 'price'" color="primary" size="large" name="checkmark" (click)="updatePrice()" style="display: inline-block; margin: 0 1em; cursor: pointer;"></ion-icon>
+      <ion-icon *ngIf="editing !== 'price'" color="medium" size="large" name="create" (click)="editing = 'price'" style="display: inline-block; margin: 0 1em; cursor: pointer;"></ion-icon>
       <ion-range
         mode="ios"
         dualKnobs="true"

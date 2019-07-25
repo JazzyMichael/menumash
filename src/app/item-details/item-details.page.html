@@ -3,7 +3,7 @@
       <ion-buttons slot="start">
         <ion-icon slot="icon-only" name="arrow-round-back" (click)="goBack()" style="cursor: pointer"></ion-icon>
       </ion-buttons>
-      <ion-title *ngIf="itemService.selected$ | async as item">{{ item.restaurant.name }} ({{ item.restaurant.city }})</ion-title>
+      <ion-title *ngIf="itemService.selected$ | async as item">{{ item.restaurant.name }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -17,7 +17,7 @@
     </ion-card-header>
 
     <ion-card-content>
-      <p *ngIf="item.description">{{ item.description }}</p>
+      <p *ngIf="item.description">{{ item.description }} ({{ item.restaurant.city }})</p>
 
       <img [src]="item.restaurant.logoUrl" alt="Food-Image" style="margin: 2em auto; height: 150px; width: auto;">
 

@@ -27,6 +27,8 @@ export class ItemsPage implements OnInit, OnDestroy {
   userSub: Subscription;
   itemSub: Subscription;
 
+  signedIn: boolean;
+
   items: any[];
   filteredItems: any[];
   roundOfItems: any[];
@@ -62,6 +64,7 @@ export class ItemsPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.userSub = this.authService.user$.subscribe(user => {
+      this.signedIn = user ? true : false;
       this.count = user && user.swipes ? user.swipes : 0;
     });
 
@@ -101,7 +104,7 @@ export class ItemsPage implements OnInit, OnDestroy {
     this.updateSwipeCount$.pipe(
       debounceTime(777)
     ).subscribe((num: number) => {
-      if (this.count) {
+      if (this.count && this.signedIn) {
         this.authService.updateUserDoc({ swipes: this.count });
       }
     });

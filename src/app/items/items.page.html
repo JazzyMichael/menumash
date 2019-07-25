@@ -37,7 +37,7 @@
     (throwoutright)="vote(true)">
 
     <div #mycards swing-card *ngFor="let item of roundOfItems; index as i;">
-      <ion-card style="transition: opacity 400ms ease-out !important" [ngStyle]="{'opacity': i === roundOfItems.length - 1 ? '1' : '0.1'}">
+      <ion-card style="transition: opacity 300ms ease-out !important" [ngStyle]="{'opacity': i === roundOfItems.length - 1 ? '1' : '0.1'}">
         <img [src]="item.restaurant.logoUrl" alt="Food Image" class="food-image">
 
         <ion-card-header>

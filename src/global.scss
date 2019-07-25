@@ -36,6 +36,9 @@ ion-content {
 
 ion-card {
     background: linear-gradient(50deg, #fffff6, #ffffff) !important;
+    max-width: 800px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
 ion-item {
