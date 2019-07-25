@@ -2,19 +2,20 @@
 <ion-content>
   
   <ion-card *ngIf="auth.user$ | async as user" style="margin-bottom: 2em;">
-    <ion-card-header>
-      <ion-card-title>{{ user.displayName }}</ion-card-title>
-      <ion-card-subtitle>Swipes: {{ user.swipes }}</ion-card-subtitle>
-    </ion-card-header>
+    <ion-card-header [ngClass]="{'flex-header': !user?.uid}" style="margin-bottom: 1.2em">
+      <div>
+        <ion-card-title>{{ user.displayName }}</ion-card-title>
+        <ion-card-subtitle>Swipes: {{ user.swipes }}</ion-card-subtitle>
+      </div>
 
-    <ion-card-content text-center>
-
-      <ion-button *ngIf="!user?.uid" size="small" style="margin-bottom: 3em" (click)="auth.loginWithGoogle()">
+      <ion-button *ngIf="!user?.uid" size="small" (click)="auth.loginWithGoogle()">
         <ion-icon slot="start" name="logo-google"></ion-icon>
         <ion-label>Sign In</ion-label>
       </ion-button>
 
-      <br>
+    </ion-card-header>
+
+    <ion-card-content text-center>
 
       <ion-icon *ngIf="latitude && longitude" name="locate" color="primary" size="large"></ion-icon>
       <div *ngIf="latitude && longitude" style="width: 100%; max-width: 400px; margin: 0 auto; display: flex; justify-content: space-around;">
@@ -42,9 +43,12 @@
 
       <br><br>
  
-      <p style="display: inline-block">Radius: {{ radius }}mi</p>
-      <ion-icon *ngIf="editing === 'radius'" color="primary" size="large" name="checkmark" (click)="updateRadius()" style="display: inline-block; margin: 0 1em; cursor: pointer;"></ion-icon>
-      <ion-icon *ngIf="editing !== 'radius'" color="medium" size="large" name="create" (click)="editing = 'radius'"  style="display: inline-block; margin: 0 1em; cursor: pointer;"></ion-icon>
+      <div style="display: flex; justify-content: center; align-items: center;">
+        <p style="margin: 0">Radius: {{ radius }}mi</p>
+        <ion-icon *ngIf="editing === 'radius'" color="primary" name="checkmark" (click)="updateRadius()" style="margin: 0 1em; cursor: pointer; font-size: 22px;"></ion-icon>
+        <ion-icon *ngIf="editing !== 'radius'" color="medium" name="create" (click)="editing = 'radius'" style="margin: 0 1em; cursor: pointer; font-size: 22px;"></ion-icon>
+      </div>
+      
       <ion-range
         mode="ios"
         min="2"
@@ -60,9 +64,12 @@
 
       <br><br>
 
-      <p style="display: inline-block">Price: ${{ price.lower }} - ${{ price.upper }}</p>
-      <ion-icon *ngIf="editing === 'price'" color="primary" size="large" name="checkmark" (click)="updatePrice()" style="display: inline-block; margin: 0 1em; cursor: pointer;"></ion-icon>
-      <ion-icon *ngIf="editing !== 'price'" color="medium" size="large" name="create" (click)="editing = 'price'" style="display: inline-block; margin: 0 1em; cursor: pointer;"></ion-icon>
+      <div style="display: flex; justify-content: center; align-items: center;">
+        <p style="margin: 0">Price: ${{ price.lower }} - ${{ price.upper }}</p>
+        <ion-icon *ngIf="editing === 'price'" color="primary" name="checkmark" (click)="updatePrice()" style="margin: 0 1em; cursor: pointer; font-size: 22px;"></ion-icon>
+        <ion-icon *ngIf="editing !== 'price'" color="medium" name="create" (click)="editing = 'price'" style="margin: 0 1em; cursor: pointer; font-size: 22px;"></ion-icon>
+      </div>
+
       <ion-range
         mode="ios"
         dualKnobs="true"

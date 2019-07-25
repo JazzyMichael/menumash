@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ScrollService } from '../services/scroll.service';
+// import { ScrollService } from '../services/scroll.service';
 
 @Component({
   selector: 'app-home',
@@ -9,7 +9,7 @@ import { ScrollService } from '../services/scroll.service';
 })
 export class HomePage implements OnInit {
 
-  constructor(private router: Router, public scrollService: ScrollService) {}
+  constructor(private router: Router) {}
 
   ngOnInit() {
     this.router.navigateByUrl('tabs/home/profile');

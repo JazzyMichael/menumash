@@ -36,7 +36,7 @@ ion-content {
 
 ion-card {
     background: linear-gradient(50deg, #fffff6, #ffffff) !important;
-    max-width: 800px !important;
+    max-width: 95% !important;
     margin-left: auto !important;
     margin-right: auto !important;
 }
@@ -47,4 +47,10 @@ ion-item {
 
 ion-item:hover {
     --background: white !important;
+}
+
+@media (min-width: 900px) {
+    ion-card {
+        max-width: 800px !important;
+    }
 }
