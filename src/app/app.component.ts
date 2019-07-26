@@ -35,7 +35,7 @@ export class AppComponent {
 
         if (address) {
           this.itemService.getItems({
-            zipcode: address.zip,
+            zip: address.zip,
             latitude: address.latitude,
             longitude: address.longitude
           });

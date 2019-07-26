@@ -13,13 +13,11 @@ import { Subscription } from 'rxjs';
 export class ProfileComponent implements OnInit, OnDestroy {
   price: any;
   radius: number = 5;
-  zipcode: number | string = null;
-  latitude: string = null;
-  longitude: string = null;
   typing: boolean;
-  validZip: boolean;
   editing: string;
   addressSub: Subscription;
+  address: any = { zip: '' };
+  validZip: boolean;
 
   constructor(
     public auth: AuthService,
@@ -28,10 +26,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.addressSub = this.itemService.address$.subscribe(address => {
-      this.zipcode = address && address.zip ? address.zip : null;
-      this.latitude = address && address.latitude ? `${address.latitude}` : null;
-      this.longitude = address && address.longitude ? `${address.longitude}` : null;
-      this.validZip = this.zipcode ? true : false;
+
+      if (address && address.latitude) {
+        address.latitude = `${address.latitude}`;
+      }
+      if (address && address.longitude) {
+        address.longitude = `${address.longitude}`;
+      }
+
+      this.address = address || {};
+
+      this.validZip = this.address && this.address.zip ? true : false;
     });
 
     this.priceService.price$.pipe(
@@ -43,8 +48,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   zipInputBlur() {
     this.typing = false;
-    if (this.zipcode && this.validZip) {
-      this.itemService.getItems({ zipcode: this.zipcode, radius: this.radius });
+    if (this.address && this.address.zip && this.validZip) {
+      this.itemService.getItems({ zip: this.address.zip, radius: this.radius });
     }
   }
 
@@ -54,8 +59,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     if (isValid) {
       this.validZip = true;
-      this.zipcode = event.detail.value;
-      this.itemService.address$.next({ ...this.itemService.address, zip: this.zipcode });
+      this.address.zip = event.detail.value;
+      this.itemService.address$.next({ ...this.itemService.address, zip: this.address.zip });
     } else {
       this.validZip = false;
     }

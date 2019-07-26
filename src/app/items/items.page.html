@@ -6,9 +6,16 @@
 
   <div *ngIf="!items?.length" style="width: 90%; height: 90%; margin: 1em auto; display: flex; flex-direction: column; justify-content: space-around; align-items: center;">
       <div *ngIf="itemService.address$ | async as address; else noZip">
-        <span>Loading food for {{ address.zip }}</span>
-        <br>
-        <ion-progress-bar value="0.25" buffer="0.5" style="margin: 2em 0"></ion-progress-bar>
+        <div *ngIf="address.invalid" style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 0 auto">
+          <span style="margin-bottom: 1rem">No restaurants for current location</span>
+          <ion-button routerLink="/home/profile">Enter Zipcode!</ion-button>
+        </div>
+        <div *ngIf="!address.invalid">
+          <span *ngIf="address.zip">Loading food for {{ address.zip }}</span>
+          <span *ngIf="!address.zip">Loading food</span>
+          <br>
+          <ion-progress-bar type="indeterminate" style="margin: 2em 0"></ion-progress-bar>
+        </div>
       </div>
       <img src="assets/hamburger-guy.svg" alt="Loading Image with Hamburger">
   </div>

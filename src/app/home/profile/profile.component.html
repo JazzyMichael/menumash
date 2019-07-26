@@ -17,20 +17,17 @@
 
     <ion-card-content text-center>
 
-      <ion-icon *ngIf="latitude && longitude" name="locate" color="primary" size="large"></ion-icon>
-      <div *ngIf="latitude && longitude" style="width: 100%; max-width: 400px; margin: 0 auto; display: flex; justify-content: space-around;">
-        <p>Lat: {{ latitude | slice:0:10 }}</p>
-        <p>Long: {{ longitude | slice:0:10 }}</p>
-      </div>
+      <ion-icon *ngIf="address && address.latitude && address.longitude" name="locate" color="primary" size="large"></ion-icon>
+      <p *ngIf="address && address.latitude && address.longitude">{{ address.latitude | slice:0:10 }}, {{ address.longitude | slice:0:10 }} <span *ngIf="address && address.city" style="margin-left: 10px">({{ address.city }})</span></p>
 
       <ion-item color="transparent" style="color: gray; margin: 2em auto; width: 90%;">
         <ion-label color="medium" position="floating">Zip Code</ion-label>
         <ion-input
           type="text"
-          [value]="zipcode"
+          [value]="address.zip"
           inputmode="numeric"
           maxlength="10"
-          [color]="zipcode && validZip ? 'primary' : 'danger'"
+          [color]="validZip ? 'primary' : 'danger'"
           pattern="/^[0-9]{5}(?:-[0-9]{4})?$/"
           required="true"
           debounce="200"

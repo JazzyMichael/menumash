@@ -17,7 +17,7 @@ export class ItemService {
   constructor(private fns: AngularFireFunctions) {
     const cachedItems = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
     const cachedSaved = localStorage.getItem('saved') ? JSON.parse(localStorage.getItem('saved')) : [];
-    const cachedAddress = localStorage.getItem('address') ? JSON.parse(localStorage.getItem('address')) : {};
+    const cachedAddress = localStorage.getItem('address') ? JSON.parse(localStorage.getItem('address')) : null;
 
     this.items$ = new BehaviorSubject(cachedItems);
     this.saved$ = new BehaviorSubject(cachedSaved);
@@ -40,19 +40,20 @@ export class ItemService {
     }
   }
 
-  getItems({ zipcode = null, longitude = null, latitude = null, radius = null }) {
+  getItems({ zip = null, longitude = null, latitude = null, radius = null }) {
 
-    if (!zipcode && !longitude && !latitude) {
+    if (!zip && !longitude && !latitude) {
       console.log('no location');
       return;
     }
 
     const callable = this.fns.httpsCallable('getItems');
 
-    callable({ zipcode, longitude, latitude, radius })
+    callable({ zipcode: zip, longitude, latitude, radius })
       .subscribe(async res => {
         if (!res || res.error) {
           console.log('error getting items', res);
+          this.address$.next({ ...this.address, zip: '', invalid: true });
           return;
         }
 
