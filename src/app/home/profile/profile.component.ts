@@ -14,7 +14,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   price: any;
   radius: number = 5;
   typing: boolean;
-  editing: string;
+  editing: string = 'price';
   addressSub: Subscription;
   address: any = { zip: '' };
   validZip: boolean;
