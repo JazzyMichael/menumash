@@ -10,6 +10,10 @@
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
 
+* {
+    font-family: 'Nunito', sans-serif;
+}
+
 ::-webkit-scrollbar-track {
     box-shadow: inset 0 0 6px rgba(0,0,0,0.3) !important;
     background-color: #F5F5F5 !important;
@@ -31,7 +35,7 @@
 }
 
 ion-content {
-    --ion-background-color: linear-gradient(#62a0fd, #bbf5d6);
+    --ion-background-color: linear-gradient(#9fb4d4, #bbf5d6);
 }
 
 ion-card {
